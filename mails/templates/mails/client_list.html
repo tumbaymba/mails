@@ -2,7 +2,7 @@
 {% block content %}
 
 <div class="col-12 mb-5">
-    <p><a class="btn btn-primary" href="#" role="button">Добавить клиента</a></p>
+    <p><a class="btn btn-primary" href="{% url 'mails:create_client'%}" role="button">Добавить клиента</a></p>
 </div>
 
 <div class="row">
@@ -15,11 +15,11 @@
                 <h5 class="card-header"> Клиент </h5>
                 <div class="card-body">
                     <h5 class="card-title">{{object}}</h5>
-                    <p class="card-text">Комментарий:{{object.comment}} </p>
+                    <p class="card-text">Комментарий: {{object.comment}} </p>
 
-                    <a href="#" class="btn btn-primary">detail view</a>
-                    <a href="#" class="btn btn-primary">edit</a>
-                    <a href="#" class="btn btn-primary">delete</a>
+                    <a href="{% url 'mails:view_client' object.pk%}" class="btn btn-primary">detail view</a>
+                    <a href="{% url 'mails:edit_client' object.pk%}" class="btn btn-primary">edit</a>
+                    <a href="{% url 'mails:delete_client' object.pk%}" class="btn btn-primary">delete</a>
                 </div>
             </div>
         </div>

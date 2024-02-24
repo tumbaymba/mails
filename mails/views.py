@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView, ListView
+from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
 
 from blog.models import Blog
 from mails.forms import ClientForm
@@ -32,13 +32,29 @@ def contacts(request):
 
     return render(request, 'mails/contacts.html', context)
 
+
 class ClientListView(ListView):
     model = Client
     extra_context = {
         'title': "Клиенты сервиса ",
     }
-class ClientCreateView( CreateView):
+
+
+class ClientDetailView(DetailView):
+    model = Client
+
+
+class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
-    success_url = reverse_lazy('mails:index')
+    success_url = reverse_lazy('mails:client_list')
 
+
+class ClientUpdateView(UpdateView):
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('mails:client_list')
+
+class ClientDeleteView(DeleteView):
+    model = Client
+    success_url = reverse_lazy('mails:client_list')
