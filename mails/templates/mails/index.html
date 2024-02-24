@@ -1,23 +1,20 @@
 {% extends 'mails/base.html' %}
 {% block content %}
 
-   <div class="jumbotron">
-        <h1>Marketing stuff!</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus
-            commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>
-    </div>
+<div class="jumbotron">
+    <h2>Статистика сервиса</h2>
+    <p class="lead">Количество рассылок всего:</p>
+    <p class="lead">Количество активных рассылок:</p>
+    <p class="lead">Количество уникальных клиентов для рассылок:</p>
+
+<!--        <p><a class="btn btn-lg btn-success" href="#" role="button">Get started today</a></p>-->
+</div>
 
 
-   <div class="row">
-       {% for object in object_list %}
-        <div class="col-lg-4">
-            <h2>  {{object|title}}</h2>
-            <p>  {{object.body|slice:300}}</p>
-            <p><a class="btn btn-primary" href="#" role="button">Подробнее &raquo;</a></p>
-        </div>
-       {% endfor %}
-
-
+<div class="row">
+    {% for object in object_list %}
+    {% include 'mails/includes/inc_blog.html' with object=object %}
+    {% endfor %}
+</div>
 
 {% endblock %}
