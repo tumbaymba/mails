@@ -1,7 +1,7 @@
 from django.db import models
 
 NULLABLE = {'blank': True, 'null': True}
-# Create your models here.
+
 class Blog(models.Model):
     title = models.CharField(max_length=250, verbose_name='Заголовок')
     body = models.TextField(verbose_name='Содержимое')
