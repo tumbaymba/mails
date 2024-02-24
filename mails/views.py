@@ -1,7 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import TemplateView
+from django.urls import reverse_lazy
+from django.views.generic import TemplateView, CreateView, ListView
 
 from blog.models import Blog
+from mails.forms import ClientForm
+from mails.models import Client
 
 
 class IndexView(TemplateView):
@@ -28,3 +31,14 @@ def contacts(request):
         print(f"{name} ({phone}, {email}): {message}")
 
     return render(request, 'mails/contacts.html', context)
+
+class ClientListView(ListView):
+    model = Client
+    extra_context = {
+        'title': "Клиенты сервиса ",
+    }
+class ClientCreateView( CreateView):
+    model = Client
+    form_class = ClientForm
+    success_url = reverse_lazy('mails:index')
+
