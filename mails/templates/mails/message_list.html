@@ -2,27 +2,38 @@
 {% block content %}
 
 <div class="col-12 mb-5">
-    <p><a class="btn btn-primary" href="{% url 'mails:create_message'%}" role="button">Добавить сообщение для рассылки</a></p>
+    <p><a class="btn btn-primary" href="{% url 'mails:create_message'%}" role="button">Добавить сообщение для
+        рассылки</a></p>
 </div>
 
-<div class="row">
 
+<table class="table">
+    <thead>
+    <tr>
+
+        <th scope="col">Тема письма</th>
+        <th scope="col">Тело письма</th>
+
+    </tr>
+    </thead>
+    <tbody>
     {% for object in object_list %}
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        <div class="col">
-            <div class="card h-100">
 
-                <h5 class="card-header"> Сообщение для рассылки </h5>
-                <div class="card-body">
-                    <h5 class="card-title">Тема письма: {{object}}</h5>
-                    <p class="card-text"> Тело письма: {{object.body}} </p>
+    <tr>
+        <td>{{object|slice:50}}</td>
+        <td>{{object.body|slice:50}}</td>
 
-                    <a href="{% url 'mails:view_message' object.pk%}" class="btn btn-primary">detail view</a>
-                    <a href="{% url 'mails:edit_message' object.pk%}" class="btn btn-primary">edit</a>
-                    <a href="{% url 'mails:delete_message' object.pk%}" class="btn btn-primary">delete</a>
-                </div>
-            </div>
-        </div>
-    </div>
+        <td><a href="{% url 'mails:view_message' object.pk%}" class="btn btn-primary">detail view</a></td>
+        <td><a href="{% url 'mails:edit_message' object.pk%}" class="btn btn-primary">edit</a></td>
+        <td><a href="{% url 'mails:delete_message' object.pk%}" class="btn btn-primary">delete</a></td>
+    </tr>
     {% endfor %}
-    {% endblock %}
+
+
+    </tbody>
+</table>
+
+
+</div>
+
+{% endblock %}

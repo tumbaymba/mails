@@ -1,20 +1,16 @@
 {% extends 'mails/base.html' %}
 {% block content %}
 
-<div class="col-12 mb-5">
-    <p><a class="btn btn-primary" href="{% url 'mails:create_message'%}" role="button">Добавить сообщение для рассылки</a></p>
-</div>
-
 <div class="row">
 
     <div class="row row-cols-1 row-cols-md-3 g-4">
         <div class="col">
             <div class="card h-100">
 
-                <h5 class="card-header"> Сообщение для рассылки </h5>
+                <h5 class="card-header"> Тема письма: {{object}} </h5>
                 <div class="card-body">
-                    <h5 class="card-title">Тема письма: {{object}}</h5>
-                    <p class="card-text"> Тело письма: {{object.body}} </p>
+                    <h5 class="card-title">Тело письма: </h5>
+                    <p class="card-text"> {{object.body}} </p>
                 </div>
             </div>
         </div>
