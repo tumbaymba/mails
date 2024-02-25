@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'mails',
     'blog',
     # 'users',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -133,7 +134,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
-
 # AUTH_PASSWORD_VALIDATORS
 # с задачи лодок
 
@@ -146,3 +146,13 @@ EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'noreply@oscarbot.ru'
 EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+
+# Максимальное время выполнения, разрешенное для заданий, которые запускаются вручную через сайт администрирования Django, что
+# предотвращает истечение времени ожидания HTTP-запросов сайта администрирования.
+#
+# Более длительные задания, вероятно, следует передать в библиотеку обработки фоновых задач,
+# которая вместо этого поддерживает несколько фоновых рабочих процессов (например, Dramatiq, Celery, Django-RQ,
+# и т. д. См.: https://djangopackages.org/grids/g /workers-queues-tasks/ для популярных вариантов).
+APSCHEDULER_RUN_NOW_TIMEOUT = 25  # секунд
