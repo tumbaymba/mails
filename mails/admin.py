@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from mails.models import Client, Message
+from mails.models import Client, Message, Mail
 
 
 # Register your models here.
@@ -13,4 +13,13 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('pk','title', 'body',)
     search_fields = ('title', 'body',)
     list_filter = ('title',)
+
+
+@admin.register(Mail)
+class MailAdmin(admin.ModelAdmin):
+    list_display = ('pk','name','message','date_start', 'date_end','start_time','period', 'status','is_active', )
+    search_fields = ( 'message',)
+    list_filter = ('is_active',)
+
+
 

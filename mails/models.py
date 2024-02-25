@@ -49,9 +49,9 @@ class Mail(models.Model):
     date_end = models.DateField(verbose_name='Дата окончания рассылки', default=timezone.now)
     start_time = models.TimeField(verbose_name='Время рассылки', default=timezone.now)
     period = models.CharField(max_length=30, choices=PERIOD_CHOICES, verbose_name='Периодичность рассылки',
-                              default='once_a_day')
+                              default='раз в день')
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name='Статус рассылки',
-                              default='created')
+                              default='создана')
     is_active = models.BooleanField(default=True, verbose_name='Активна')
 
     def __str__(self):
@@ -63,11 +63,10 @@ class Mail(models.Model):
 
 
 class Log(models.Model):
-
     STATUS_LOG = [('expected', 'ожидается'),
-                ('failed', 'провалено'),
-                ('completed', 'завершено'),
-                ]
+                  ('failed', 'провалено'),
+                  ('completed', 'завершено'),
+                  ]
 
     mail = models.ForeignKey(Mail, on_delete=models.CASCADE, verbose_name='Рассылка')
     client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Клиент')
@@ -82,7 +81,3 @@ class Log(models.Model):
     class Meta:
         verbose_name = 'Лог'
         verbose_name_plural = 'Логи'
-
-
-
-
