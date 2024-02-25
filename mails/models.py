@@ -33,14 +33,14 @@ class Message(models.Model):
 
 class Mail(models.Model):
     PERIOD_CHOICES = [
-        ('once_a_day', 'раз в день'),
-        ('once_a_week', 'раз в неделю'),
-        ('once_a_month', 'раз в месяц'),
+        ('раз в день', 'раз в день'),
+        ('раз в неделю', 'раз в неделю'),
+        ('раз в месяц', 'раз в месяц'),
     ]
     STATUS_CHOICES = [
-        ('created', 'создана'),
-        ('ended', 'завершена'),
-        ('in_work', 'запущена'),
+        ('создана', 'создана'),
+        ('завершена', 'завершена'),
+        ('запущена', 'запущена'),
     ]
     name = models.CharField(max_length=100, verbose_name='Название рассылки', default='Рассылка')
     clients = models.ManyToManyField(Client, verbose_name='Кому (клиенты сервиса)')

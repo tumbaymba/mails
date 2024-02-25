@@ -18,7 +18,8 @@ class ClientForm(StyleFormMixin,forms.ModelForm):
 class MailForm(StyleFormMixin,forms.ModelForm):
     class Meta:
         model = Mail
-        fields = '__all__'
+        exclude = ('is_active',)
+        # fields = '__all__'
 
 
 class MessageForm(StyleFormMixin,forms.ModelForm):
