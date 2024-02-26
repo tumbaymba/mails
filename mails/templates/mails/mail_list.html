@@ -22,7 +22,13 @@
 
     <tr>
         <td>{{object.name|slice:50}}</td>
-        <td>{{object.clients|slice:50}}</td>
+        <td>
+            <ul>
+                {% for value in object.clients.all.values_list %}
+                 <li>{{value.1 }}</li>
+                {% endfor%}
+            </ul>
+        </td>
         <td>{{object.message|slice:50}}</td>
         <td>{{object.status|slice:50}}</td>
         <td><a href="{% url 'mails:view_mail' object.pk%}" class="btn btn-primary">detail view</a></td>
