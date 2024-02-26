@@ -1,35 +1,35 @@
 [
   {
     "model": "mails.client",
-    "pk": 1,
+    "pk": 6,
+    "fields": {
+      "email": "it_z_me@mail.ru",
+      "last_name": "Мельников",
+      "first_name": "Александр",
+      "father_name": "Андреевич",
+      "comment": "реальная почта"
+    }
+  },
+  {
+    "model": "mails.client",
+    "pk": 7,
     "fields": {
       "email": "test@sky.pro",
-      "last_name": "Testov",
-      "first_name": "Test",
-      "father_name": "Testovich",
-      "comment": "Проверка отображения\r\n/edit\r\n\r\n**"
+      "last_name": "Тест",
+      "first_name": "Тест",
+      "father_name": "Тест",
+      "comment": "проверка для рассылки"
     }
   },
   {
     "model": "mails.client",
-    "pk": 2,
+    "pk": 8,
     "fields": {
       "email": "test1@sky.pro",
-      "last_name": "Testov1",
-      "first_name": "Test1",
-      "father_name": "Testovich1",
-      "comment": "Проверка отображения1"
-    }
-  },
-  {
-    "model": "mails.client",
-    "pk": 5,
-    "fields": {
-      "email": "test2@sky.pro",
-      "last_name": "Testova2",
-      "first_name": "Test2",
-      "father_name": "Testovna2",
-      "comment": "для количества"
+      "last_name": "Тестов",
+      "first_name": "Тест1",
+      "father_name": "Тестович1",
+      "comment": "сверка"
     }
   },
   {
@@ -62,6 +62,94 @@
     "fields": {
       "title": "С праздником 8 марта, дорогие коллеги!",
       "body": "Дорогие женщины!\r\n\r\nПримите самые сердечные поздравления с замечательным праздником весны — Международным женским днем 8 Марта!\r\n\r\nВ этот день мужчины говорят вам самые теплые и самые сокровенные слова — вы их заслужили. Благодаря вашему терпению и мудрости, нам удается преодолевать потрясения и невзгоды.\r\n\r\nИменно вы делаете мир добрее и уютнее. Многие из вас с достоинством исполняют свои профессиональные обязанности на работе. И в улучшении жизни в нашем [районе, коллективе] — есть огромная доля вашего труда. В этот весенний день позвольте выразить вам слова признательности за вашу чуткость и доброту, заботу и внимание, которыми вы щедро одариваете нас в жизни.\r\n\r\nСчастья вам и благополучия, молодости и красоты, радости и любви!\r\n\r\nС уважением,\r\nПетр Петров"
+    }
+  },
+  {
+    "model": "mails.mail",
+    "pk": 3,
+    "fields": {
+      "name": "Рассылка",
+      "message": 2,
+      "date_start": "2024-02-25",
+      "date_end": "2024-02-25",
+      "start_time": "16:51:16",
+      "period": "раз в день",
+      "status": "создана",
+      "is_active": true,
+      "clients": [
+        6,
+        7
+      ]
+    }
+  },
+  {
+    "model": "mails.mail",
+    "pk": 8,
+    "fields": {
+      "name": "Рассылка",
+      "message": 2,
+      "date_start": "2024-02-25",
+      "date_end": "2024-02-25",
+      "start_time": "17:36:53",
+      "period": "раз в день",
+      "status": "создана",
+      "is_active": true,
+      "clients": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "mails.mail",
+    "pk": 9,
+    "fields": {
+      "name": "Рассылка",
+      "message": 3,
+      "date_start": "2024-02-25",
+      "date_end": "2024-02-25",
+      "start_time": "17:47:15",
+      "period": "раз в день",
+      "status": "создана",
+      "is_active": true,
+      "clients": [
+        6
+      ]
+    }
+  },
+  {
+    "model": "mails.mail",
+    "pk": 10,
+    "fields": {
+      "name": "Рассылка",
+      "message": 2,
+      "date_start": "2024-02-25",
+      "date_end": "2024-02-25",
+      "start_time": "18:02:40",
+      "period": "раз в день",
+      "status": "создана",
+      "is_active": true,
+      "clients": [
+        7
+      ]
+    }
+  },
+  {
+    "model": "mails.mail",
+    "pk": 11,
+    "fields": {
+      "name": "Рассылка",
+      "message": 1,
+      "date_start": "2024-02-26",
+      "date_end": "2024-02-26",
+      "start_time": "20:08:06",
+      "period": "раз в день",
+      "status": "создана",
+      "is_active": true,
+      "clients": [
+        8,
+        6,
+        7
+      ]
     }
   }
 ]
