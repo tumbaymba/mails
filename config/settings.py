@@ -38,7 +38,7 @@ INSTALLED_APPS = [
 
     'mails',
     'blog',
-    # 'users',
+    'users',
     'django_apscheduler',
 ]
 
@@ -130,22 +130,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# AUTH_USER_MODEL = 'users.USER'
+AUTH_USER_MODEL = 'users.USER'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 # AUTH_PASSWORD_VALIDATORS
 # с задачи лодок
 
-# if DEBUG:
-#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-# else:
-#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
-EMAIL_HOST_USER = 'noreply@oscarbot.ru'
-EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = 'smtp.yandex.ru'
+    EMAIL_PORT = 465
+    EMAIL_USE_SSL = True
+    EMAIL_HOST_USER = 'noreply@oscarbot.ru'
+    EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
 
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 
