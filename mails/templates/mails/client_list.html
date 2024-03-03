@@ -1,10 +1,10 @@
 {% extends 'mails/base.html' %}
 {% block content %}
 
+
 <div class="col-12 mb-5">
     <p><a class="btn btn-primary" href="{% url 'mails:create_client'%}" role="button">Добавить клиента</a></p>
 </div>
-
 
 <table class="table">
     <thead>
@@ -15,6 +15,8 @@
         <th scope="col">Отчество</th>
         <th scope="col">Email</th>
         <th scope="col">Комментарий</th>
+        <th scope="col">Автор</th>
+
     </tr>
     </thead>
     <tbody>
@@ -26,6 +28,8 @@
         <td>{{object.father_name}}</td>
         <td>{{object.email}}</td>
         <td>{{object.comment}}</td>
+        <td>{{object.owner}}</td>
+
         <td><a href="{% url 'mails:view_client' object.pk%}" class="btn btn-primary">detail view</a></td>
         <td><a href="{% url 'mails:edit_client' object.pk%}" class="btn btn-primary">edit</a></td>
         <td><a href="{% url 'mails:delete_client' object.pk%}" class="btn btn-primary">delete</a></td>
@@ -38,5 +42,7 @@
 
 
 </div>
+
+
 
 {% endblock %}

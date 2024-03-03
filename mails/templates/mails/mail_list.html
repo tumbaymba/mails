@@ -1,6 +1,8 @@
 {% extends 'mails/base.html' %}
 {% block content %}
 
+
+
 <div class="col-12 mb-5">
     <p><a class="btn btn-primary" href="{% url 'mails:create_mail'%}" role="button">Добавить рассылку</a></p>
 </div>
@@ -14,6 +16,7 @@
         <th scope="col">Кому (клиенты сервиса)</th>
         <th scope="col">Сообщение для рассылки</th>
         <th scope="col">Статус рассылки</th>
+        <th scope="col">автор</th>
 
     </tr>
     </thead>
@@ -31,6 +34,7 @@
         </td>
         <td>{{object.message|slice:50}}</td>
         <td>{{object.status|slice:50}}</td>
+        <td>{{object.owner}}</td>
         <td><a href="{% url 'mails:view_mail' object.pk%}" class="btn btn-primary">detail view</a></td>
         <td><a href="{% url 'mails:edit_mail' object.pk%}" class="btn btn-primary">edit</a></td>
         <td><a href="{% url 'mails:delete_mail' object.pk%}" class="btn btn-primary">delete</a></td>

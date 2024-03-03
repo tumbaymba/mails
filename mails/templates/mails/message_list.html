@@ -13,6 +13,7 @@
 
         <th scope="col">Тема письма</th>
         <th scope="col">Тело письма</th>
+        <th scope="col">Автор</th>
 
     </tr>
     </thead>
@@ -22,6 +23,7 @@
     <tr>
         <td>{{object|slice:50}}</td>
         <td>{{object.body|slice:50}}</td>
+        <td>{{object.owner}}</td>
 
         <td><a href="{% url 'mails:view_message' object.pk%}" class="btn btn-primary">detail view</a></td>
         <td><a href="{% url 'mails:edit_message' object.pk%}" class="btn btn-primary">edit</a></td>

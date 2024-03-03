@@ -1,3 +1,6 @@
+import random
+
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -15,7 +18,12 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['object_list'] = Blog.objects.all()[:3]
+        context_data['mail_count'] = len(Mail.objects.all())
+        context_data['active_mail_count'] = len(Mail.objects.filter(is_active=True))
+        context_data['client_count'] = len(Client.objects.all())
+        # context_data['object_list'] = Blog.objects.all()[:3]
+        context_data['object_list'] = random.sample(list(Blog.objects.all()), 3)
+
         return context_data
 
 
@@ -33,81 +41,131 @@ def contacts(request):
     return render(request, 'mails/contacts.html', context)
 
 
-class ClientListView(ListView):
+class ClientListView(LoginRequiredMixin, ListView):
     model = Client
     extra_context = {
         'title': "Клиенты сервиса ",
     }
 
+    def get_queryset(self, **kwargs):
+        if self.request.user.is_superuser:
+            return Client.objects.all()
+        return Client.objects.filter(owner=self.request.user)
 
+
+# class ClientDetailView(PermissionRequiredMixin, DetailView):
 class ClientDetailView(DetailView):
     model = Client
+    # permission_required = 'mails.view_client'
 
 
 class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mails:client_list')
+    # permission_required = 'mails.add_client'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
-class ClientUpdateView(UpdateView):
+class ClientUpdateView( UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mails:client_list')
+    # permission_required = 'mails.change_client'
+
 
 class ClientDeleteView(DeleteView):
     model = Client
     success_url = reverse_lazy('mails:client_list')
+    # permission_required = 'mails.delete_client'
 
-class MessageListView(ListView):
+
+class MessageListView(LoginRequiredMixin, ListView):
     model = Message
     extra_context = {
         'title': "Сообщения для рассылки ",
     }
 
+    def get_queryset(self, **kwargs):
+        if self.request.user.is_superuser:
+            return Message.objects.all()
+        return Message.objects.filter(owner=self.request.user)
+
 
 class MessageDetailView(DetailView):
     model = Message
+    # permission_required = 'mails.view_message'
 
 
 class MessageCreateView(CreateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mails:message_list')
+    # permission_required = 'mails.add_message'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class MessageUpdateView(UpdateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mails:message_list')
+    # permission_required = 'mails.change_message'
+
 
 class MessageDeleteView(DeleteView):
     model = Message
     success_url = reverse_lazy('mails:message_list')
+    # permission_required = 'mails.delete_message'
 
 
-class MailListView(ListView):
+class MailListView(LoginRequiredMixin, ListView):
     model = Mail
     extra_context = {
         'title': "Рассылки ",
     }
 
+    def get_queryset(self, **kwargs):
+        if self.request.user.is_superuser:
+            return Mail.objects.all()
+        return Mail.objects.filter(owner=self.request.user)
+
 
 class MailDetailView(DetailView):
     model = Mail
+    # permission_required = 'mails.view_mail'
 
 
 class MailCreateView(CreateView):
     model = Mail
     form_class = MailForm
     success_url = reverse_lazy('mails:mail_list')
+    # permission_required = 'mails.add_mail'
+
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class MailUpdateView(UpdateView):
     model = Mail
     form_class = MailForm
     success_url = reverse_lazy('mails:mail_list')
+    # permission_required = 'mails.change_mail'
 
-class MailDeleteView(DeleteView):
+
+class MailDeleteView( DeleteView):
     model = Mail
     success_url = reverse_lazy('mails:mail_list')
+    # permission_required = 'mails.delete_mail'
