@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 import pytz
+from django.core.cache import cache
 
 from django.core.mail import send_mail
 from django.conf import settings
@@ -51,3 +52,13 @@ def my_job():
             mail.status = 'завершена'
         mail.save()
 
+def get_cache_for_mailings():
+    if settings.CACHE_ENABLED:
+        key = 'mailings_count'
+        mailings_count = cache.get(key)
+        if mailings_count is None:
+            mailings_count = Mail.objects.all().count()
+            cache.set(key, mailings_count)
+    else:
+        mailings_count = Mail.objects.all().count()
+    return mailings_count

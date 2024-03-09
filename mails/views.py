@@ -10,6 +10,7 @@ from django.views.generic import TemplateView, CreateView, ListView, DetailView,
 from blog.models import Blog
 from mails.forms import ClientForm, MessageForm, MailForm
 from mails.models import Client, Message, Mail
+from mails.services import get_cache_for_mailings
 
 
 class IndexView(TemplateView):
@@ -20,7 +21,7 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        context_data['mail_count'] = len(Mail.objects.all())
+        context_data['mail_count'] = get_cache_for_mailings()
         context_data['active_mail_count'] = len(Mail.objects.filter(is_active=True))
         context_data['client_count'] = len(Client.objects.all())
         # context_data['object_list'] = Blog.objects.all()[:3]
