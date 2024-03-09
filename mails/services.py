@@ -4,6 +4,7 @@ from django.core.cache import cache
 
 from django.core.mail import send_mail
 from django.conf import settings
+from django.utils import timezone
 
 from mails.models import Mail, Log
 
@@ -62,3 +63,48 @@ def get_cache_for_mailings():
     else:
         mailings_count = Mail.objects.all().count()
     return mailings_count
+
+def send_mailing():
+    current_time = timezone.localtime(timezone.now())
+    mailing_list = Mail.objects.all()
+    for mailing in mailing_list:
+        if mailing.date_end < current_time:
+            mailing.status = Mail.DONE
+            continue
+        if mailing.time_start <= current_time < mailing.date_end:
+            mailing.status = Mail.STARTED
+            mailing.save()
+            for client in mailing.client.all():
+                try:
+                    send_mail(
+                        subject=mailing.message.title,
+                        message=mailing.message.body,
+                        from_email=settings.EMAIL_HOST_USER,
+                        recipient_list=[client.email],
+                        fail_silently=False
+                    )
+
+                    log = Logs.objects.create(
+                        date=mailing.time_start,
+                        status=Logs.SENT,
+                        mailing=mailing,
+                        client=client
+                    )
+                    log.save()
+                    return log
+
+                except SMTPException as error:
+                    log = Logs.objects.create(
+                        date=mailing.time_start,
+                        status=Logs.FAILED,
+                        mailling=mailing,
+                        client=client,
+                        response=error
+                    )
+                    log.save()
+
+                    return log
+
+        else:
+            mailing.status = Mail.DONE
+            mailing.save()
