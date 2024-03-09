@@ -1,7 +1,9 @@
 import random
 
+from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
-from django.shortcuts import render
+from django.contrib.auth.models import Permission
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, CreateView, ListView, DetailView, UpdateView, DeleteView
 
@@ -48,7 +50,7 @@ class ClientListView(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self, **kwargs):
-        if self.request.user.is_superuser:
+        if self.request.user.is_superuser or self.request.user.is_staff:
             return Client.objects.all()
         return Client.objects.filter(owner=self.request.user)
 
@@ -63,6 +65,7 @@ class ClientCreateView(CreateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mails:client_list')
+
     # permission_required = 'mails.add_client'
 
     def form_valid(self, form):
@@ -72,7 +75,7 @@ class ClientCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ClientUpdateView( UpdateView):
+class ClientUpdateView(UpdateView):
     model = Client
     form_class = ClientForm
     success_url = reverse_lazy('mails:client_list')
@@ -92,7 +95,7 @@ class MessageListView(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self, **kwargs):
-        if self.request.user.is_superuser:
+        if self.request.user.is_superuser or self.request.user.is_staff:
             return Message.objects.all()
         return Message.objects.filter(owner=self.request.user)
 
@@ -106,6 +109,7 @@ class MessageCreateView(CreateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy('mails:message_list')
+
     # permission_required = 'mails.add_message'
 
     def form_valid(self, form):
@@ -135,14 +139,18 @@ class MailListView(LoginRequiredMixin, ListView):
     }
 
     def get_queryset(self, **kwargs):
-        if self.request.user.is_superuser:
+        if self.request.user.is_superuser or self.request.user.is_staff:
             return Mail.objects.all()
+        p_view_mail = Permission.objects.get(codename='view_mail')
+        p_change_mail = Permission.objects.get(codename='change_mail')
+        p_delete_mail = Permission.objects.get(codename='delete_mail')
+        self.request.user.user_permissions.set([p_view_mail, p_change_mail, p_delete_mail])
         return Mail.objects.filter(owner=self.request.user)
 
 
-class MailDetailView(DetailView):
+class MailDetailView(PermissionRequiredMixin, DetailView):
     model = Mail
-    # permission_required = 'mails.view_mail'
+    permission_required = 'mails.view_mail'
 
 
 class MailCreateView(CreateView):
@@ -150,6 +158,10 @@ class MailCreateView(CreateView):
     form_class = MailForm
     success_url = reverse_lazy('mails:mail_list')
     # permission_required = 'mails.add_mail'
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
     def form_valid(self, form):
         self.object = form.save()
@@ -158,14 +170,30 @@ class MailCreateView(CreateView):
         return super().form_valid(form)
 
 
-class MailUpdateView(UpdateView):
+class MailUpdateView(PermissionRequiredMixin,UpdateView):
     model = Mail
     form_class = MailForm
     success_url = reverse_lazy('mails:mail_list')
-    # permission_required = 'mails.change_mail'
+    permission_required = 'mails.change_mail'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs.update({'request': self.request})
+        return kwargs
 
 
-class MailDeleteView( DeleteView):
+class MailDeleteView(PermissionRequiredMixin,DeleteView):
     model = Mail
     success_url = reverse_lazy('mails:mail_list')
-    # permission_required = 'mails.delete_mail'
+    permission_required = 'mails.delete_mail'
+
+
+# @permission_required(perm='set_is_active', raise_exception=True)
+def toogle_activity(request, pk):
+    mail_item = get_object_or_404(Mail, pk=pk)
+    if mail_item.is_active:
+        mail_item.is_active = False
+    else:
+        mail_item.is_active = True
+    mail_item.save()
+    return redirect('mails:mail_list')

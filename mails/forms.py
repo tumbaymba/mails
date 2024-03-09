@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import DateTimeInput
 
 from mails.models import Client, Mail, Message
 
@@ -9,21 +10,35 @@ class StyleFormMixin:
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
-class ClientForm(StyleFormMixin,forms.ModelForm):
+
+class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
         # fields = '__all__'
         exclude = ('owner',)
 
 
-class MailForm(StyleFormMixin,forms.ModelForm):
+class MailForm(StyleFormMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request')
+        user = self.request.user
+        super().__init__(*args, **kwargs)
+        self.fields['clients'].queryset = Client.objects.filter(owner=user)
+        self.fields['message'].queryset = Message.objects.filter(owner=user)
+
     class Meta:
         model = Mail
-        exclude = ('is_active','owner')
+        exclude = ('is_active', 'owner')
         # fields = '__all__'
 
+        widgets = {
+            'start_date': DateTimeInput(attrs={'placeholder': 'ДД.ММ.ГГГГ ЧЧ:ММ:СС', 'type': 'datetime-local'}),
+            'end_date': DateTimeInput(attrs={'placeholder': 'ДД.ММ.ГГГГ ЧЧ:ММ:СС', 'type': 'datetime-local'}),
+        }
 
-class MessageForm(StyleFormMixin,forms.ModelForm):
+
+class MessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
         # fields = '__all__'

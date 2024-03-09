@@ -58,7 +58,7 @@ class Mail(models.Model):
                               default='раз в день')
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, verbose_name='Статус рассылки',
                               default='создана')
-    is_active = models.BooleanField(default=True, verbose_name='Активна')
+    is_active = models.BooleanField(default=True, verbose_name='Активация рассылки')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, **NULLABLE, verbose_name='автор')
 
 
@@ -68,6 +68,9 @@ class Mail(models.Model):
     class Meta:
         verbose_name = 'Рассылка'
         verbose_name_plural = 'Рассылки'
+        permissions = [
+            ("set_is_active", "Активация рассылки")
+        ]
 
 
 class Log(models.Model):

@@ -20,11 +20,11 @@ def my_job():
     for mail in mails:
         mail.status = 'запущена'
         mail.save()
-        emails_list = [client.email for client in mail.client.all()]
+        emails_list = [client.email for client in mail.clients.all()]
 
         result = send_mail(
             subject=mail.message.title,
-            message=mail.message.content,
+            message=mail.message.body,
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=emails_list,
             fail_silently=False,
