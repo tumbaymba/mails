@@ -1,8 +1,9 @@
 import random
 
 from django.conf import settings
+from django.contrib.auth.decorators import login_required, permission_required
 from django.core.mail import send_mail
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
@@ -66,3 +67,25 @@ class ProfileView(UpdateView):
 
     def get_object(self, queryset=None):  # тем самым уходим от привязки с pk
         return self.request.user
+
+
+@login_required
+@permission_required(['users.view_user', 'users.set_is_active'])
+def get_users_list(request):
+    users_list = User.objects.all()
+    context = {
+        'object_list': users_list,
+        'title': 'Список пользователей сервиса',
+    }
+    return render(request, 'users/user_list.html', context)
+
+
+def toogle_activity(request, pk):
+    user_item = get_object_or_404(User, pk=pk)
+    if user_item.is_active:
+        user_item.is_active = False
+    else:
+        user_item.is_active = True
+    user_item.save()
+    return redirect('users:list_view')
+
