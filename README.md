@@ -155,3 +155,13 @@
 8. Создайте суперпользователя: python manage.py csu
 9. Запустите сервер: python manage.py runserver
 10. Зарегистрируйтесь на проекте, cоздайте своих клиентов, сообщения и саму рассылку. После создание рассылки нужно вызвать команду в терминале python manage.py runapscheduler
+11. Настройка для кеша.
+Перед тем как использовать пакет redis внутри Django, не забудьте установить БД Redis.
+Для этого:
+в Linux используется команда 
+sudo apt install redis
+или 
+sudo yum install redis,
+в macOS — команда 
+brew install redis,
+в случае с Windows воспользуйтесь инструкцией: https://redis.io/docs
