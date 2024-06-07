@@ -14,7 +14,6 @@ class StyleFormMixin:
 class ClientForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Client
-        # fields = '__all__'
         exclude = ('owner',)
 
 
@@ -30,7 +29,7 @@ class MailForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Mail
         exclude = ('is_active', 'owner')
-        # fields = '__all__'
+
 
         widgets = {
             'start_date': DateTimeInput(attrs={'placeholder': 'ДД.ММ.ГГГГ ЧЧ:ММ:СС', 'type': 'datetime-local'}),
@@ -41,5 +40,4 @@ class MailForm(StyleFormMixin, forms.ModelForm):
 class MessageForm(StyleFormMixin, forms.ModelForm):
     class Meta:
         model = Message
-        # fields = '__all__'
         exclude = ('owner',)

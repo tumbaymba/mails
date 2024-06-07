@@ -74,13 +74,8 @@ class Mail(models.Model):
 
 
 class Log(models.Model):
-    # STATUS_LOG = [('expected', 'ожидается'),
-    #               ('failed', 'провалено'),
-    #               ('completed', 'завершено'),
-    #               ]
 
     mail = models.ForeignKey(Mail, on_delete=models.CASCADE, verbose_name='Рассылка')
-    # client = models.ForeignKey(Client, on_delete=models.CASCADE, verbose_name='Клиент')
     last_time_mail = models.DateTimeField(auto_now=True, verbose_name='дата и время последней попытки')
     status = models.CharField(max_length=50, verbose_name='Статус попытки')
     response = models.TextField(verbose_name='Ответ сервера', **NULLABLE)

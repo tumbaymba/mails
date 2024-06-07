@@ -22,7 +22,7 @@ load_dotenv(dotenv_path=dot_env)
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#7ws7v!pws2_4s65znq-ct$d^o91+y_h_0$)gu85($19q)p$cc'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -81,9 +81,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mails',
-        'USER': 'postgres',
-        'PASSWORD': 721719,
+        'NAME': os.getenv('NAME'),
+        'USER': os.getenv('USER'),
+        'PASSWORD': os.getenv('PASSWORD'),
+
     }
 }
 
@@ -150,7 +151,7 @@ else:
     EMAIL_PORT = 465
     EMAIL_USE_SSL = True
     EMAIL_HOST_USER = 'noreply@oscarbot.ru'
-    EMAIL_HOST_PASSWORD = 'AsTSNVv7pun9'
+    EMAIL_HOST_PASSWORD = 'aevcszobbixdztet'
 
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 

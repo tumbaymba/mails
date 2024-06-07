@@ -23,7 +23,7 @@ class RegisterView(CreateView):
         new_user.is_active = False
         secret_token = ''.join([str(random.randint(0, 9)) for string in range(10)])
         new_user.token = secret_token
-        message = f'Вы указали этот E-mail в качестве основного адреса на нашей платформе!\nДля подтверждения вашего Е-mail перейдите по ссылке http://127.0.0.1:8000/users/verify/?token={secret_token}'
+        message = f'Вы указали E-mail в качестве основного адреса!\nДля подтверждения перейдите по ссылке http://127.0.0.1:8000/users/verify/?token={secret_token}'
         send_mail(
             subject='Подтверждение E-mail адреса',
             message=message,
@@ -46,7 +46,6 @@ def activate_user(request):
 
 
 def generate_new_password(request):
-    # new_password  = ''.join([str(random.randint(0, 9)) for string in range(10)])
     new_password = get_new_password()
     send_mail(
         subject='Вы сменили пароль',
@@ -65,7 +64,7 @@ class ProfileView(UpdateView):
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
 
-    def get_object(self, queryset=None):  # тем самым уходим от привязки с pk
+    def get_object(self, queryset=None):
         return self.request.user
 
 
